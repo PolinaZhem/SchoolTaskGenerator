@@ -1,0 +1,60 @@
+﻿<Window x:Class="WpfApp1.Task"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:sys="clr-namespace:System;assembly=mscorlib"
+        xmlns:local="clr-namespace:WpfApp1"
+        mc:Ignorable="d"
+        Title="Tasks" Height="450" Width="800">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="7*"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="3*"/>
+            <ColumnDefinition Width="15px"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <GridSplitter Grid.Column="1" Grid.RowSpan="3" Width="10px" VerticalAlignment="Stretch" HorizontalAlignment="Center" Background="DarkGray">
+            <GridSplitter.Template>
+                <ControlTemplate TargetType="{x:Type GridSplitter}">
+                    <Grid>
+                        <Button Content="⁞" />
+                        <Rectangle Fill="LightGray" />
+                    </Grid>
+                </ControlTemplate>
+            </GridSplitter.Template>
+        </GridSplitter>
+        
+        <WrapPanel Grid.Row="2" Grid.ColumnSpan="3" HorizontalAlignment="Right" Margin="15,15">
+            <Button IsDefault="True" MinWidth="60" Margin="0,0,10,0">OK</Button>
+            <Button IsCancel="True" MinWidth="60">Отмена</Button>
+        </WrapPanel>
+
+        <DockPanel Grid.Row="0" Grid.ColumnSpan="3" HorizontalAlignment="Left" Margin="15,15">
+            <TextBlock Width="130px"> Сколько задач нужно: </TextBlock>
+            <!--<TextBox x:Name="CountTextBox" Width="200px"/>-->
+            <ComboBox x:Name="CountComboBox" Width="45" >
+                <sys:String>1</sys:String>
+                <sys:String>2</sys:String>
+                <sys:String>3</sys:String>
+                <sys:String>4</sys:String>
+                <sys:String>5</sys:String>
+                <sys:String>6</sys:String>
+                <sys:String>7</sys:String>
+                <sys:String>8</sys:String>
+                <sys:String>9</sys:String>
+                <sys:String>10</sys:String>
+            </ComboBox>
+            <Button x:Name="CountButton" DockPanel.Dock="Right" IsDefault="True" MinWidth="60" Margin="10,0,0,0" Width="60" Click="CountButton_Click" >OK</Button>
+        </DockPanel>
+
+
+        <TextBox Grid.Row="1" Grid.Column="0" x:Name="ExerciseTextBox"/>
+        <TextBox Grid.Row="1" Grid.Column="2" x:Name="AnswersTextBox"/>
+    </Grid>
+</Window>
