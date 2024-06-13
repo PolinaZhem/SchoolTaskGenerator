@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:WpfApp1"
         xmlns:col="clr-namespace:System.Collections;assembly=mscorlib"
         mc:Ignorable="d"
-        Title="PolinaApp" Height="450" Width="800" MinHeight="350px" MinWidth="600"
+        Title="School Task Generator" Height="450" Width="800" MinHeight="350px" MinWidth="600"
         >
     <Grid Margin="15px 0 15px 15px">
         <Grid.RowDefinitions>
