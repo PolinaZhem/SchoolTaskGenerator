@@ -12,6 +12,15 @@ namespace WpfApp1
         private Stack<Token> _RPN = null;
         private Dictionary<string, double> value_of_variable = null;
 
+        private void copy_of_RPN(Stack<Token> copyofr, Stack<Token> r)
+        {
+            foreach (Token token in r)
+            {
+                Token t = new Token(token);
+                copyofr.Push(t);
+            }
+        }
+
         private void PrintStack(Stack<Token> given_st, string name)
         {
             Stack<Token> copy_stack = new Stack<Token>(given_st);
@@ -410,13 +419,17 @@ namespace WpfApp1
 
         public double Calculate()
         {
-            //if (_RPN.Count() == 0)
-            //    throw new ArgumentOutOfRangeException("Error", "No loaded formula!");
+            Stack<Token> tokens = new Stack<Token>();
+            copy_of_RPN(tokens, _RPN);
+            if (_RPN.Count() == 0)
+                throw new ArgumentOutOfRangeException("Error", "No loaded formula!");
             double result = CalculateRPN(_RPN, value_of_variable);
             if (_RPN.Count() > 0)
                 throw new ArgumentOutOfRangeException("Error", "Fromula error! Too much operands.");
+            copy_of_RPN(_RPN, tokens);
 
             return result;
+            //добавить копию RPN
         }
     }
 }

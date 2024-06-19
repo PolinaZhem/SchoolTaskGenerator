@@ -18,6 +18,11 @@ namespace WpfApp1
             toktype = t;
             str = s;
         }
+        public Token(Token t)
+        {
+            str = t.str;
+            toktype = t.toktype;
+        }
 
         public override string ToString()
         {
