@@ -419,14 +419,13 @@ namespace WpfApp1
 
         public double Calculate()
         {
-            Stack<Token> tokens = new Stack<Token>();
-            copy_of_RPN(tokens, _RPN);
-            if (_RPN.Count() == 0)
+            Stack<Token> tmp_toks = new Stack<Token>(_RPN);
+            Stack<Token> tokens = new Stack<Token>(tmp_toks);
+            if (tokens.Count() == 0)
                 throw new ArgumentOutOfRangeException("Error", "No loaded formula!");
-            double result = CalculateRPN(_RPN, value_of_variable);
-            if (_RPN.Count() > 0)
+            double result = CalculateRPN(tokens, value_of_variable);
+            if (tokens.Count() > 0)
                 throw new ArgumentOutOfRangeException("Error", "Fromula error! Too much operands.");
-            copy_of_RPN(_RPN, tokens);
 
             return result;
             //добавить копию RPN

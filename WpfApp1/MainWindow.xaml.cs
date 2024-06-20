@@ -1,18 +1,9 @@
 ﻿using System;
+using System.IO;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using System.Runtime;
+using Microsoft.Win32;
 
 namespace WpfApp1
 {
@@ -67,29 +58,6 @@ namespace WpfApp1
             MessageBox.Show(t);
             VariablesGrid.ItemsSource = text_vars;
             VariablesGrid.Items.Refresh();
-
-
-            /*
-             * "Бла бла бла скорость равна {Speed} м/с, бла бла время было {t} сек."
-             * Разобрать текст на список строк без переменных в фигурных скобках
-             * Закинуть переменные в таблицу --------
-             * 
-             * По кнопке анализ формулы построить RPN и сверить список переменных *я не знаю как передать список переменных в диалоговое окно и обратно
-             * 
-             * По кнопке Сгенерировать задачу:
-             *      - создать словарь переменных
-             *      - задать переменным целые значения по формуле (rand()%((b-a)/step+1))*step+a
-             *      - совместить текст и значения
-             *      - рассчитать формулу со значениями переменных
-             *      - составить текст задачи и ответ к ней, показать в MessageBox
-             *      
-             *      formula_vars
-             *      генерировать ответ к задаче. hhbhh
-             */
-
-            // var_list.Clear();
-            // var_list.Add(new VariableSetter { Name = "ABCD", RangeFrom = 0, RangeTo = 100, Step = 1, DigitsToRound = 0 });
-            // VariablesGrid.Items.Refresh();
         }
 
         private void FormulaAnalysisButton_Click(object sender, RoutedEventArgs e)
@@ -116,26 +84,6 @@ namespace WpfApp1
         private Task task;
         private void GenerateTaskButton_Click(object sender, RoutedEventArgs e)
         {
-            //Random rand = new Random();
-            //string t = "";
-            //foreach (var v in text_vars)
-            //{
-            //    int diff = ((int)v.RangeTo - (int)v.RangeFrom) / (int)v.Step;
-            //    int value = rand.Next(diff + 1) * (int)v.Step + (int)v.RangeFrom;
-            //    //t += $"{v.Name} = {value} ({diff + 1})\r\n";
-            //    formula_vars[v.Name] = value;
-            //    v.Value = value;
-            //}
-
-            //for (int i =0; i<text_of_task.Count-1; i++)
-            //{
-            //    t+=text_of_task[i];
-            //    t+=text_vars[i].Value;
-            //}
-            //t += text_of_task.Last();
-
-            //MessageBox.Show(t);
-
             task = new Task();
             task.SetSolver(solver);
             task.SetText(text_of_task);
@@ -143,7 +91,28 @@ namespace WpfApp1
             task.SetForVar(formula_vars);
 
             var res = task.ShowDialog();
-            //formula_vars
+        }
+
+        private void MenuSave_Click(object sender, RoutedEventArgs e)
+        {
+            SaveFileDialog dialog = new SaveFileDialog();
+            dialog.Filter = "Файлы задач (*.sctask)|*.sctask|Все файлы|*.*";
+            dialog.Title = "Сохранение задачи";
+            if (dialog.ShowDialog() != true)
+                return;
+
+            FileStream fs = new FileStream(dialog.FileName, FileMode.Create, FileAccess.Write);
+            using (StreamWriter sw = new StreamWriter(fs))
+            {
+                sw.WriteLine(TaskTextBox.Text);
+                sw.WriteLine(FormulaTextBox.Text);
+                sw.WriteLine(VariablesGrid.Items.Count);
+                foreach (VariableSetter item in VariablesGrid.Items)
+                {
+                    sw.WriteLine(item.ToString());
+                }
+            }
+            fs.Close();
         }
     }
 }

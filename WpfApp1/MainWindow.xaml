@@ -10,6 +10,7 @@
         >
     <Grid Margin="15px 0 15px 15px">
         <Grid.RowDefinitions>
+            <RowDefinition Height ="40px" />
             <RowDefinition Height ="8*" />
             <RowDefinition Height ="40px" />
         </Grid.RowDefinitions>
@@ -18,7 +19,20 @@
             <ColumnDefinition Width ="20px" />
             <ColumnDefinition Width ="1*" MinWidth="200px" />
         </Grid.ColumnDefinitions>
-        <GridSplitter Grid.Column="1" Grid.RowSpan="2" Width="10px" VerticalAlignment="Stretch" HorizontalAlignment="Center" Background="DarkGray">
+        <Menu Height="25" VerticalAlignment="Top" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3">
+            <MenuItem Header="Задачи">
+                <MenuItem Header="Новая задача" ></MenuItem>
+                <MenuItem Header="Открыть задачу" ></MenuItem>
+                <MenuItem Header="Сохранить задачу" Click="MenuSave_Click"></MenuItem>
+                <Separator />
+                <MenuItem Header="Выход" ></MenuItem>
+            </MenuItem>
+            <MenuItem Header="О программе" >
+                <MenuItem Header="Справка" ></MenuItem>
+                <MenuItem Header="Авторы" ></MenuItem>
+            </MenuItem>
+        </Menu>
+        <GridSplitter Grid.Column="1" Grid.Row="1" Grid.RowSpan="2" Width="10px" VerticalAlignment="Stretch" HorizontalAlignment="Center" Background="DarkGray">
             <GridSplitter.Template>
                 <ControlTemplate TargetType="{x:Type GridSplitter}">
                     <Grid>
@@ -28,7 +42,7 @@
                 </ControlTemplate>
             </GridSplitter.Template>
         </GridSplitter>
-        <Grid Grid.Column="0" Grid.Row="0" >
+        <Grid Grid.Column="0" Grid.Row="1" >
             <Grid.RowDefinitions>
                 <RowDefinition Height ="30px" />
                 <RowDefinition Height ="9*" />
@@ -49,7 +63,7 @@
                 </TextBox>
             </ScrollViewer>
         </Grid>
-        <DataGrid Grid.Column="2" Grid.Row="0" x:Name="VariablesGrid" AutoGenerateColumns="False" CanUserAddRows="False">
+        <DataGrid Grid.Column="2" Grid.Row="1" x:Name="VariablesGrid" AutoGenerateColumns="False" CanUserAddRows="False">
             <!--<DataGrid.Items>
                 <local:VariableSetter Name="Speed" RangeFrom="50" RangeTo="100" Step="10" DigitsToRound="0"/>
                 <local:VariableSetter Name="Time" RangeFrom="150" RangeTo="1000" Step="100" DigitsToRound="0"/>
@@ -86,7 +100,7 @@
                 </DockPanel>
             </Grid>
         </DockPanel>-->
-        <Button x:Name="FormulaAnalysisButton" Grid.Column="0" Grid.Row="1" Content="Анализ формулы" Click="FormulaAnalysisButton_Click"  />
-        <Button x:Name="GenerateTaskButton" Grid.Column="2" Grid.Row="1" Content="Сгенерировать задачу" IsEnabled="False" Click="GenerateTaskButton_Click"/>
+        <Button x:Name="FormulaAnalysisButton" Grid.Column="0" Grid.Row="2" Content="Анализ формулы" Click="FormulaAnalysisButton_Click"  />
+        <Button x:Name="GenerateTaskButton" Grid.Column="2" Grid.Row="2" Content="Сгенерировать задачу" IsEnabled="False" Click="GenerateTaskButton_Click"/>
     </Grid>
 </Window>

@@ -56,10 +56,9 @@ namespace WpfApp1
         {
             formula = f;
         }
-        public void MakeTaskAndAnswer()
+        public void MakeTaskAndAnswer(Random rand)
         {
-            solver.LoadFormula(formula);
-            Random rand = new Random();
+           // solver.LoadFormula(formula);
             foreach (var v in text_vars)
             {
                 int diff = ((int)v.RangeTo - (int)v.RangeFrom) / (int)v.Step;
@@ -74,18 +73,19 @@ namespace WpfApp1
                 t += text_of_task[i];
                 t += text_vars[i].Value;
             }
-            t += text_of_task.Last();
+            t += text_of_task.Last() + "\r\n\r\n";
             ExerciseTextBox.Text += t;
             double result = solver.Calculate();
-            AnswersTextBox.Text = result.ToString();
+            AnswersTextBox.Text += result.ToString() + "\r\n\r\n";
         }
 
         private void CountButton_Click(object sender, RoutedEventArgs e)
         {
+            Random rand = new Random();
             this.count = CountComboBox.SelectedIndex + 1;
             for (int j = 0; j < count; j++)
             {
-                MakeTaskAndAnswer();
+                MakeTaskAndAnswer(rand);
             }
         }
     }

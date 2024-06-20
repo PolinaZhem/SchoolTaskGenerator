@@ -14,5 +14,10 @@ namespace WpfApp1
         public double Step { get; set; }
         public int DigitsToRound { get; set; }
         public double Value { get; set; } = 0;
+
+        public override string ToString()
+        {
+            return $"{Name} {RangeFrom} {RangeTo} {Step} {DigitsToRound}";
+        }
     }
 }
