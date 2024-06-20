@@ -22,7 +22,7 @@
         <Menu Height="25" VerticalAlignment="Top" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3">
             <MenuItem Header="Задачи">
                 <MenuItem Header="Новая задача" ></MenuItem>
-                <MenuItem Header="Открыть задачу" ></MenuItem>
+                <MenuItem Header="Открыть задачу" Click="MenuOpen_Click"></MenuItem>
                 <MenuItem Header="Сохранить задачу" Click="MenuSave_Click"></MenuItem>
                 <Separator />
                 <MenuItem Header="Выход" ></MenuItem>

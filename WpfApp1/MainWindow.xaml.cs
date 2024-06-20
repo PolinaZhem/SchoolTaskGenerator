@@ -114,5 +114,36 @@ namespace WpfApp1
             }
             fs.Close();
         }
+        private void MenuOpen_Click(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog dialog = new OpenFileDialog();
+            dialog.Filter = "Файлы задач (*.sctask)|*.sctask|Все файлы|*.*";
+            dialog.Title = "Открытие задачи";
+            if (dialog.ShowDialog() != true)
+                return;
+
+            FileStream fc = new FileStream(dialog.FileName, FileMode.Open, FileAccess.Read);
+            using (StreamReader sr = new StreamReader(fc))
+            {
+                TaskTextBox.Text = sr.ReadLine();
+                FormulaTextBox.Text = sr.ReadLine();
+                int n = Int32.Parse(sr.ReadLine());
+                TextAnalysisButton_Click(null, null);
+                for (int i = 0; i < n; i++)
+                {
+                    string t = sr.ReadLine();
+                    var text = t.Split(' ');
+                    var v = text_vars.Find(x => x.Name == text[0]);
+
+                    //VariableSetter variableSetter = new VariableSetter();
+                    //variableSetter.Name = text[0];
+                    v.RangeFrom = Int32.Parse(text[1]);
+                    v.RangeTo = Int32.Parse(text[2]);
+                    v.Step = Int32.Parse(text[3]);
+                    v.DigitsToRound = Int32.Parse(text[4]);
+                }
+                VariablesGrid.Items.Refresh();
+            }
+        }
     }
 }
