@@ -52,8 +52,7 @@
             </Grid.RowDefinitions>
             <TextBlock Grid.Row="0" Text="Введите задачу" TextAlignment="Center" VerticalAlignment="Center" />
             <ScrollViewer Grid.Row="1" Margin="0 5px">
-                <TextBox x:Name="TaskTextBox" Margin="0px" TextWrapping="Wrap">
-                </TextBox>
+                <TextBox x:Name="TaskTextBox" Margin="0px" TextWrapping="Wrap" SpellCheck.IsEnabled="True" Language="ru-ru"/>
             </ScrollViewer>
             <Button x:Name="TextAnalysisButton" Grid.Row="2" Content="Анализ текста" Click="TextAnalysisButton_Click" />
             <TextBlock Grid.Row="3" Text="Введите формулу" TextAlignment="Center" VerticalAlignment="Center" />

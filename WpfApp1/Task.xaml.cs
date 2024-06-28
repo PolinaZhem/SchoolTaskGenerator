@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -105,6 +107,26 @@ namespace WpfApp1
             {
                 MakeTaskAndAnswer(rand, j+1);
             }
+            SaveButton.IsEnabled = true;
+        }
+        private void SaveButton_Click(object sender, RoutedEventArgs e)
+        {
+            SaveFileDialog dialog = new SaveFileDialog();
+            dialog.Filter = "Файлы задач (*.sctask)|*.sctask|Все файлы|*.*";
+            dialog.Title = "Сохранение задачи";
+            if (dialog.ShowDialog() != true)
+                return;
+
+            FileStream fs = new FileStream(dialog.FileName, FileMode.Create, FileAccess.Write);
+            using (StreamWriter sw = new StreamWriter(fs))
+            {
+                for (int i = 0; i < count; i++)
+                {
+                    sw.WriteLine();
+                    //Я не понимаю как считывать текст из определенного TextBox 
+                }
+            }
+            fs.Close();
         }
     }
 }

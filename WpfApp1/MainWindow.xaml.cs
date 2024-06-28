@@ -44,18 +44,18 @@ namespace WpfApp1
             }
             text_of_task.Add(text);
 
-            string t = "";
-            foreach (var i in text_of_task)
-            {
-                t += "|" + i + "|";
-            }
-            t += "\r\n";
-            foreach (var i in text_vars)
-            {
-                t += "|" + i.Name + "|, ";
-            }
+            //string t = "";
+            //foreach (var i in text_of_task)
+            //{
+            //    t += "|" + i + "|";
+            //}
+            //t += "\r\n";
+            //foreach (var i in text_vars)
+            //{
+            //    t += "|" + i.Name + "|, ";
+            //}
             //TaskTextBox.Text = t;
-            MessageBox.Show(t);
+            //MessageBox.Show(t);
             VariablesGrid.ItemsSource = text_vars;
             VariablesGrid.Items.Refresh();
         }

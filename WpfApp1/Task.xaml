@@ -50,7 +50,8 @@
                 <sys:String>9</sys:String>
                 <sys:String>10</sys:String>
             </ComboBox>
-            <Button x:Name="CountButton" DockPanel.Dock="Right" IsDefault="True" MinWidth="60" Margin="10,0,0,0" Width="60" Click="CountButton_Click" >OK</Button>
+            <Button x:Name="SaveButton" DockPanel.Dock="Right" IsEnabled="False" MinWidth="150" Margin="10,0,0,0" Width="150" Click="SaveButton_Click" Content="Сохранить список задач" />
+            <Button x:Name="CountButton" DockPanel.Dock="Right" IsDefault="True" MinWidth="60" Margin="10,0,0,0" Width="60" Click="CountButton_Click" Content="OK" />
         </DockPanel>
 
 
