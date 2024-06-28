@@ -6,17 +6,17 @@
         xmlns:sys="clr-namespace:System;assembly=mscorlib"
         xmlns:local="clr-namespace:WpfApp1"
         mc:Ignorable="d"
-        Title="Tasks" Height="450" Width="800">
+        Title="Tasks" Height="450" Width="800" MinHeight="350px" MinWidth="600px">
     <Grid x:Name="TaskGrid">
         <Grid.RowDefinitions>
+            <RowDefinition Height="50px"/>
             <RowDefinition Height="*"/>
-            <RowDefinition Height="7*"/>
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="50px"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="3*"/>
+            <ColumnDefinition Width="3*" MinWidth="440px"/>
             <ColumnDefinition Width="15px"/>
-            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*" MinWidth="145px"/>
         </Grid.ColumnDefinitions>
 
         <GridSplitter Grid.Column="1" Grid.Row="1" Width="10px" VerticalAlignment="Stretch" HorizontalAlignment="Center" Background="DarkGray">
