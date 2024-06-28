@@ -7,7 +7,7 @@
         xmlns:local="clr-namespace:WpfApp1"
         mc:Ignorable="d"
         Title="Tasks" Height="450" Width="800">
-    <Grid>
+    <Grid x:Name="TaskGrid">
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
             <RowDefinition Height="7*"/>
@@ -19,7 +19,7 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <GridSplitter Grid.Column="1" Grid.RowSpan="3" Width="10px" VerticalAlignment="Stretch" HorizontalAlignment="Center" Background="DarkGray">
+        <GridSplitter Grid.Column="1" Grid.Row="1" Width="10px" VerticalAlignment="Stretch" HorizontalAlignment="Center" Background="DarkGray">
             <GridSplitter.Template>
                 <ControlTemplate TargetType="{x:Type GridSplitter}">
                     <Grid>
@@ -54,7 +54,7 @@
         </DockPanel>
 
 
-        <TextBox Grid.Row="1" Grid.Column="0" x:Name="ExerciseTextBox"/>
-        <TextBox Grid.Row="1" Grid.Column="2" x:Name="AnswersTextBox"/>
+        <Grid Grid.Row="1" Grid.Column="0" x:Name="ExerciseGrid"/>
+        <Grid Grid.Row="1" Grid.Column="2" x:Name="AnswersGrid"/>
     </Grid>
 </Window>

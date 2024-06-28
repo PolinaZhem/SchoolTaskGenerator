@@ -29,8 +29,6 @@ namespace WpfApp1
         public Task()
         {
             InitializeComponent();
-            ExerciseTextBox.Clear();
-            AnswersTextBox.Clear();
         }
         public int Count
         {
@@ -56,7 +54,7 @@ namespace WpfApp1
         {
             formula = f;
         }
-        public void MakeTaskAndAnswer(Random rand)
+        public void MakeTaskAndAnswer(Random rand, int variant)
         {
            // solver.LoadFormula(formula);
             foreach (var v in text_vars)
@@ -67,16 +65,36 @@ namespace WpfApp1
                 v.Value = value;
             }
 
-            string t = "";
+            string t = "Вариант " + variant.ToString() + ".";
             for (int i = 0; i < text_of_task.Count - 1; i++)
             {
                 t += text_of_task[i];
                 t += text_vars[i].Value;
             }
-            t += text_of_task.Last() + "\r\n\r\n";
-            ExerciseTextBox.Text += t;
+            t += text_of_task.Last();
+            //ExerciseTextBox.Text += t;
             double result = solver.Calculate();
-            AnswersTextBox.Text += result.ToString() + "\r\n\r\n";
+            //AnswersTextBox.Text += result.ToString() + "\r\n\r\n";
+
+            List<TextBox> textBoxes_tasks = new List<TextBox>();
+            List<TextBox> textBoxes_answers = new List<TextBox>();
+            var rd = new RowDefinition();
+            ExerciseGrid.RowDefinitions.Add(rd);
+            rd = new RowDefinition();
+            AnswersGrid.RowDefinitions.Add(rd);
+            TextBox textt = new TextBox();
+            textt.Text = t;
+            textBoxes_tasks.Add(textt);
+            Grid.SetRow(textt, ExerciseGrid.RowDefinitions.Count - 1);
+            Grid.SetColumn(textt, 0);
+            ExerciseGrid.Children.Add(textt);
+            textt = new TextBox();
+            textt.Text = result.ToString();
+            textBoxes_answers.Add(textt);
+            Grid.SetRow(textt, AnswersGrid.RowDefinitions.Count - 1);
+            Grid.SetColumn(textt, 2);
+            AnswersGrid.Children.Add(textt);
+
         }
 
         private void CountButton_Click(object sender, RoutedEventArgs e)
@@ -85,7 +103,7 @@ namespace WpfApp1
             this.count = CountComboBox.SelectedIndex + 1;
             for (int j = 0; j < count; j++)
             {
-                MakeTaskAndAnswer(rand);
+                MakeTaskAndAnswer(rand, j+1);
             }
         }
     }
