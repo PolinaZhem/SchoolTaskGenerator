@@ -22,7 +22,14 @@ namespace WpfApp1
     /// </summary>
     public partial class Task : Window
     {
-        private RPN_Solver solver = null;
+        private RPN_Solver solver;
+        public RPN_Solver Solver
+        {
+            get => solver;
+            set {
+                solver = value;
+            }
+        }
         private List<string> text_of_task = null;
         private List<VariableSetter> text_vars = null;
         private Dictionary<string, double> formula_vars = null;
@@ -36,10 +43,6 @@ namespace WpfApp1
         public int Count
         {
             get { return count; }
-        }
-        public void SetSolver(RPN_Solver s)
-        {
-            solver = s;
         }
         public void SetText(List<string> t)
         {
@@ -68,7 +71,7 @@ namespace WpfApp1
                 v.Value = value;
             }
 
-            string t = "Вариант " + variant.ToString() + ".";
+            string t = "";
             for (int i = 0; i < text_of_task.Count - 1; i++)
             {
                 t += text_of_task[i];
@@ -83,25 +86,64 @@ namespace WpfApp1
             List<TextBox> textBoxes_answers = new List<TextBox>();
             var rd = new RowDefinition();
             ExerciseGrid.RowDefinitions.Add(rd);
-            rd = new RowDefinition();
-            AnswersGrid.RowDefinitions.Add(rd);
+
+            Label number = new Label();
+            number.Content = variant.ToString();
+            Grid.SetRow(number, ExerciseGrid.RowDefinitions.Count - 1);
+            Grid.SetColumn(number, 0);
+            ExerciseGrid.Children.Add(number);
+
             TextBox textt = new TextBox();
+            textt.TextWrapping = TextWrapping.Wrap;
             textt.Text = t;
             textBoxes_tasks.Add(textt);
             Grid.SetRow(textt, ExerciseGrid.RowDefinitions.Count - 1);
-            Grid.SetColumn(textt, 0);
+            Grid.SetColumn(textt, 1);
             ExerciseGrid.Children.Add(textt);
+
             textt = new TextBox();
+            textt.TextWrapping = TextWrapping.Wrap;
             textt.Text = result.ToString();
             textBoxes_answers.Add(textt);
-            Grid.SetRow(textt, AnswersGrid.RowDefinitions.Count - 1);
-            Grid.SetColumn(textt, 2);
-            AnswersGrid.Children.Add(textt);
+            Grid.SetRow(textt, ExerciseGrid.RowDefinitions.Count - 1);
+            Grid.SetColumn(textt, 3);
+            ExerciseGrid.Children.Add(textt);
 
+            Image delete_icon = new Image();
+            delete_icon.Source = new BitmapImage(
+                new Uri("pack://application:,,,/WpfApp1;component/icons/delete.png"));
+            delete_icon.Width = 32;
+            delete_icon.Height = 32;
+            Button delete_button = new Button();
+            delete_button.Content = delete_icon;
+            var margin = delete_button.Margin;
+            margin.Top = 2;
+            margin.Left = 2;
+            margin.Right = 2;
+            margin.Bottom = 2;
+            delete_button.Margin = margin;
+            Grid.SetRow(delete_button, ExerciseGrid.RowDefinitions.Count - 1);
+            Grid.SetColumn(delete_button, 4);
+            ExerciseGrid.Children.Add(delete_button);
+            delete_button.Click += DeleteTaskButton_Click;
+        }
+
+        private void DeleteTaskButton_Click(object sender, RoutedEventArgs e)
+        {
+            var button = sender as Button;
+            int index = Grid.GetRow(button);
+
+            MessageBox.Show($"Вы нажали удалить строку {index}");
+            // удалить текстбоксы из чайлдов грида
+            // удалить текстбоксы из списков текстбоксов (-1 индекс)
+            // удалить кнопку из чайлдов грида
+            // удалить RowDefinition из грида
+            // сократить rowspan сплиттера
         }
 
         private void CountButton_Click(object sender, RoutedEventArgs e)
         {
+            // удаление всех строк грида кроме первой(нулевой)
             Random rand = new Random();
             if (!Int32.TryParse(CountTextBox.Text, out var count))
             {
@@ -116,6 +158,7 @@ namespace WpfApp1
                 {
                     MakeTaskAndAnswer(rand, j + 1);
                 }
+                Grid.SetRowSpan(TaskSplitter, count+1);
                 SaveButton.IsEnabled = true;
             }
         }

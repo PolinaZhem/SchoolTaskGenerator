@@ -32,6 +32,7 @@
                 <MenuItem Header="Авторы" ></MenuItem>
             </MenuItem>
         </Menu>
+
         <GridSplitter Grid.Column="1" Grid.Row="1" Grid.RowSpan="2" Width="10px" VerticalAlignment="Stretch" HorizontalAlignment="Center" Background="DarkGray">
             <GridSplitter.Template>
                 <ControlTemplate TargetType="{x:Type GridSplitter}">

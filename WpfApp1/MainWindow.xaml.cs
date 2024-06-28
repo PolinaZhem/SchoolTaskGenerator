@@ -84,7 +84,7 @@ namespace WpfApp1
         private void GenerateTaskButton_Click(object sender, RoutedEventArgs e)
         {
             task = new Task();
-            task.SetSolver(solver);
+            task.Solver = solver;
             task.SetText(text_of_task);
             task.SetVar(text_vars);
             task.SetForVar(formula_vars);
