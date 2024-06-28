@@ -80,7 +80,6 @@ namespace WpfApp1
             GenerateTaskButton.IsEnabled = everything_ok;
         }
 
-
         private Task task;
         private void GenerateTaskButton_Click(object sender, RoutedEventArgs e)
         {
@@ -152,6 +151,10 @@ namespace WpfApp1
             text_vars.Clear();
             VariablesGrid.ItemsSource = text_vars;
             VariablesGrid.Items.Refresh();
+        }
+        private void MenuExit_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
         }
     }
 }
