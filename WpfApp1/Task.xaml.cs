@@ -1,6 +1,7 @@
 ﻿using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Eventing.Reader;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -102,12 +103,21 @@ namespace WpfApp1
         private void CountButton_Click(object sender, RoutedEventArgs e)
         {
             Random rand = new Random();
-            this.count = CountComboBox.SelectedIndex + 1;
-            for (int j = 0; j < count; j++)
+            if (!Int32.TryParse(CountTextBox.Text, out var count))
             {
-                MakeTaskAndAnswer(rand, j+1);
+                string error = "Введите целое число.";
+                MessageBox.Show(error);
+                CountTextBox.Text = "";
             }
-            SaveButton.IsEnabled = true;
+            else
+            {
+                this.count = Int32.Parse(CountTextBox.Text);
+                for (int j = 0; j < count; j++)
+                {
+                    MakeTaskAndAnswer(rand, j + 1);
+                }
+                SaveButton.IsEnabled = true;
+            }
         }
         private void SaveButton_Click(object sender, RoutedEventArgs e)
         {

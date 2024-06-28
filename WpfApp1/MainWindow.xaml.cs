@@ -30,7 +30,7 @@ namespace WpfApp1
         }
 
         private void TextAnalysisButton_Click(object sender, RoutedEventArgs e)
-        {
+        { 
             string text = TaskTextBox.Text;
             text_of_task = new List<string>();
             text_vars.Clear();

@@ -37,8 +37,8 @@
 
         <DockPanel Grid.Row="0" Grid.ColumnSpan="3" HorizontalAlignment="Left" Margin="15,15">
             <TextBlock Width="130px"> Сколько задач нужно: </TextBlock>
-            <!--<TextBox x:Name="CountTextBox" Width="200px"/>-->
-            <ComboBox x:Name="CountComboBox" Width="45" >
+            <TextBox x:Name="CountTextBox" Width="50px"/>
+            <!--<ComboBox x:Name="CountComboBox" Width="45" >
                 <sys:String>1</sys:String>
                 <sys:String>2</sys:String>
                 <sys:String>3</sys:String>
@@ -49,7 +49,7 @@
                 <sys:String>8</sys:String>
                 <sys:String>9</sys:String>
                 <sys:String>10</sys:String>
-            </ComboBox>
+            </ComboBox>-->
             <Button x:Name="SaveButton" DockPanel.Dock="Right" IsEnabled="False" MinWidth="150" Margin="10,0,0,0" Width="150" Click="SaveButton_Click" Content="Сохранить список задач" />
             <Button x:Name="CountButton" DockPanel.Dock="Right" IsDefault="True" MinWidth="60" Margin="10,0,0,0" Width="60" Click="CountButton_Click" Content="OK" />
         </DockPanel>
