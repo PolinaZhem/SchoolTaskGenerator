@@ -20,12 +20,12 @@ namespace WpfApp1
         public MainWindow()
         {
             InitializeComponent();
-            text_vars = new List<VariableSetter>
-            {
-                new VariableSetter { Name="Speed", RangeFrom=100, RangeTo=200, Step = 5, DigitsToRound = 1},
-                new VariableSetter { Name="Time", RangeFrom=200, RangeTo=400, Step = 15, DigitsToRound = 2},
-                new VariableSetter { Name="Dist", RangeFrom=300, RangeTo=500, Step = 25, DigitsToRound = 3}
-            };
+            text_vars = new List<VariableSetter>();
+            //{
+            //    new VariableSetter { Name="Speed", RangeFrom=100, RangeTo=200, Step = 5, DigitsToRound = 1},
+            //    new VariableSetter { Name="Time", RangeFrom=200, RangeTo=400, Step = 15, DigitsToRound = 2},
+            //    new VariableSetter { Name="Dist", RangeFrom=300, RangeTo=500, Step = 25, DigitsToRound = 3}
+            //};
             VariablesGrid.ItemsSource = text_vars;
         }
 
@@ -144,6 +144,14 @@ namespace WpfApp1
                 }
                 VariablesGrid.Items.Refresh();
             }
+        }
+        private void MenuNew_Click(object sender, RoutedEventArgs e)
+        {
+            TaskTextBox.Clear();
+            FormulaTextBox.Clear();
+            text_vars.Clear();
+            VariablesGrid.ItemsSource = text_vars;
+            VariablesGrid.Items.Refresh();
         }
     }
 }
