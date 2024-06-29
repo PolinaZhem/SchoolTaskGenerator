@@ -47,6 +47,8 @@ namespace WpfApp1
             set => formula_vars = value;
         }
         private string formula = "";
+        private List<TextBox> textBoxes_tasks = new List<TextBox>();
+        private List<TextBox> textBoxes_answers = new List<TextBox>();
 
         private int count { get; set; }
         public Task()
@@ -79,8 +81,6 @@ namespace WpfApp1
             double result = solver.Calculate();
             //AnswersTextBox.Text += result.ToString() + "\r\n\r\n";
 
-            List<TextBox> textBoxes_tasks = new List<TextBox>();
-            List<TextBox> textBoxes_answers = new List<TextBox>();
             var rd = new RowDefinition();
             ExerciseGrid.RowDefinitions.Add(rd);
 
@@ -156,6 +156,12 @@ namespace WpfApp1
                     MakeTaskAndAnswer(rand, j + 1);
                 }
                 Grid.SetRowSpan(TaskSplitter, count+1);
+                string s = "";
+                foreach (var task in textBoxes_tasks)
+                {
+                    s += task.Text;
+                }
+                MessageBox.Show(s);
                 SaveButton.IsEnabled = true;
             }
         }
@@ -167,16 +173,35 @@ namespace WpfApp1
             if (dialog.ShowDialog() != true)
                 return;
 
+            string answersfilename = dialog.FileName;
+            string type = "";
+            int index = answersfilename.LastIndexOf(".");
+            for (int i = index; i < answersfilename.Length; i++)
+            {
+                type += answersfilename[i];
+            }
+            answersfilename = answersfilename.Substring(0, answersfilename.LastIndexOf("."));
+            answersfilename += "_answers" + type;
             FileStream fs = new FileStream(dialog.FileName, FileMode.Create, FileAccess.Write);
+            FileStream fs2 = new FileStream(answersfilename, FileMode.Create, FileAccess.Write);
             using (StreamWriter sw = new StreamWriter(fs))
             {
                 for (int i = 0; i < count; i++)
                 {
-                    sw.WriteLine();
-                    //Я не понимаю как считывать текст из определенного TextBox 
+                    sw.WriteLine($"Вариант {i+1}. ");
+                    sw.WriteLine(textBoxes_tasks[i].Text + "\r\n\r\n");
                 }
             }
             fs.Close();
+            using (StreamWriter sw = new StreamWriter(fs2))
+            {
+                for (int i = 0; i < count; i++)
+                {
+                    sw.WriteLine($"Вариант {i + 1}. ");
+                    sw.WriteLine(textBoxes_answers[i].Text + "\r\n\r\n");
+                }
+            }
+            fs2.Close();
         }
         private void Accept_Click(object sender, RoutedEventArgs e)
         {
