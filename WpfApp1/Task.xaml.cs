@@ -78,7 +78,21 @@ namespace WpfApp1
             }
             t += text_of_task.Last();
             //ExerciseTextBox.Text += t;
-            double result = solver.Calculate();
+            string error_text = "";
+            bool is_error = false;
+            double result = 0;
+            try
+            {
+                result = solver.Calculate();
+            }
+            catch (ArgumentException e)
+            {
+                error_text = e.Message;
+                is_error = true;
+            }
+            if (is_error)
+                MessageBox.Show(error_text);
+            //double result = solver.Calculate();
             //AnswersTextBox.Text += result.ToString() + "\r\n\r\n";
 
             var rd = new RowDefinition();
