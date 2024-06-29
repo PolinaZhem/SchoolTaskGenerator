@@ -35,11 +35,11 @@
                     <RowDefinition Height="30px"/>
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="40px"/>
+                    <ColumnDefinition Width="40px" MinWidth="40px"/>
                     <ColumnDefinition Width="3*" MinWidth="150px"/>
-                    <ColumnDefinition Width="15px"/>
+                    <ColumnDefinition Width="15px" MaxWidth="15px"/>
                     <ColumnDefinition Width="*" MinWidth="50px"/>
-                    <ColumnDefinition Width="38px"/>
+                    <ColumnDefinition Width="38px" MinWidth="38px"/>
                 </Grid.ColumnDefinitions>
                 <GridSplitter x:Name="TaskSplitter" Grid.Column="2" Grid.Row="0" Grid.RowSpan="1" Width="10px" VerticalAlignment="Stretch" HorizontalAlignment="Center" Background="DarkGray">
                     <GridSplitter.Template>

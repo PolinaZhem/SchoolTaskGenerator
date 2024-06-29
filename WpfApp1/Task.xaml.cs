@@ -82,6 +82,7 @@ namespace WpfApp1
             //AnswersTextBox.Text += result.ToString() + "\r\n\r\n";
 
             var rd = new RowDefinition();
+            rd.MinHeight = 38;
             ExerciseGrid.RowDefinitions.Add(rd);
 
             Label number = new Label();
@@ -156,12 +157,12 @@ namespace WpfApp1
                     MakeTaskAndAnswer(rand, j + 1);
                 }
                 Grid.SetRowSpan(TaskSplitter, count+1);
-                string s = "";
-                foreach (var task in textBoxes_tasks)
-                {
-                    s += task.Text;
-                }
-                MessageBox.Show(s);
+                //string s = "";
+                //foreach (var task in textBoxes_tasks)
+                //{
+                //    s += task.Text;
+                //}
+                //MessageBox.Show(s);
                 SaveButton.IsEnabled = true;
             }
         }
