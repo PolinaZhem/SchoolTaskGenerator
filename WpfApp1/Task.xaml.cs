@@ -142,6 +142,13 @@ namespace WpfApp1
         private void CountButton_Click(object sender, RoutedEventArgs e)
         {
             // удаление всех строк грида кроме первой(нулевой)
+            int rows = ExerciseGrid.RowDefinitions.Count();
+            for (int i = rows-1; i > 0; i--)
+            {
+                ExerciseGrid.RowDefinitions.Remove(ExerciseGrid.RowDefinitions[i]);
+            }
+            // в последней строке после этого не тот номер варианта (не удаляется предыдущий)
+
             Random rand = new Random();
             if (!Int32.TryParse(CountTextBox.Text, out var count))
             {
