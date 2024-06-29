@@ -26,35 +26,32 @@ namespace WpfApp1
         public RPN_Solver Solver
         {
             get => solver;
-            set {
-                solver = value;
-            }
+            set => solver = value;
         }
         private List<string> text_of_task = null;
+        public List<string> TextOfTask
+        {
+            get => text_of_task;
+            set => text_of_task = value;
+        }
         private List<VariableSetter> text_vars = null;
+        public List<VariableSetter> TextVars
+        {
+            get => text_vars;
+            set => text_vars = value;
+        }
         private Dictionary<string, double> formula_vars = null;
+        public Dictionary<string, double> FormulaVars
+        {
+            get => formula_vars;
+            set => formula_vars = value;
+        }
         private string formula = "";
 
         private int count { get; set; }
         public Task()
         {
             InitializeComponent();
-        }
-        public int Count
-        {
-            get { return count; }
-        }
-        public void SetText(List<string> t)
-        {
-            text_of_task = t;
-        }
-        public void SetVar(List<VariableSetter> v)
-        {
-            text_vars = v;
-        }
-        public void SetForVar(Dictionary<string, double> f)
-        {
-            formula_vars = f;
         }
         public void SetFormula(string f)
         {

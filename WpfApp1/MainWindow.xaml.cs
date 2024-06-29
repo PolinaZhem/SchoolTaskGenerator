@@ -85,9 +85,9 @@ namespace WpfApp1
         {
             task = new Task();
             task.Solver = solver;
-            task.SetText(text_of_task);
-            task.SetVar(text_vars);
-            task.SetForVar(formula_vars);
+            task.TextOfTask = text_of_task;
+            task.TextVars = text_vars;
+            task.FormulaVars = formula_vars;
 
             var res = task.ShowDialog();
         }
