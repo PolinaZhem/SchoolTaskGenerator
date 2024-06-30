@@ -51,7 +51,7 @@ namespace WpfApp1
     {
         None = 0, Add, Sub, Mul, Div, Mod, Minus,
         Sin, Cos, Tan, Arcs, Arcc, Arct,
-        Pow, Ln, Log, Fac,
+        Pow, Ln, Log, Fac, Sqrt,
         RoundStart, RoundEnd, Round,
         Pi, E
     };
@@ -65,7 +65,7 @@ namespace WpfApp1
         {
             if (c == 0) return false;
             return (c >= 'a' && c <= 'z' || c >= 'A' && c <= 'Z' ||
-                oper_symbols.Contains(c) || c == '[' || c == ']');
+                oper_symbols.Contains(c) || c == '[' || c == ']' );
         }
 
         public static Dictionary<string, OperType> oper_by_name = new Dictionary<string, OperType>()
@@ -76,7 +76,8 @@ namespace WpfApp1
             {"arcs", OperType.Arcs}, {"arcc", OperType.Arcc}, {"arct", OperType.Arct},
             {"^", OperType.Pow}, {"ln", OperType.Ln}, {"log", OperType.Log},
             {"!", OperType.Fac}, {"[", OperType.RoundStart}, {"]", OperType.RoundEnd},
-            {"round", OperType.Round}, {"pi", OperType.Pi}, {"e", OperType.E}
+            {"round", OperType.Round}, {"pi", OperType.Pi}, {"e", OperType.E},
+            {"sqrt", OperType.Sqrt }
         };
 
         public OperType type;
@@ -104,6 +105,10 @@ namespace WpfApp1
                     break;
                 case OperType.Pow:
                     priority = 3;
+                    break;
+                case OperType.Sqrt:
+                    priority = 3;
+                    oper_counter = 1;
                     break;
                 case OperType.Log:
                     priority = 10;
