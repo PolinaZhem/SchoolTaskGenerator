@@ -145,7 +145,32 @@ namespace WpfApp1
             var button = sender as Button;
             int index = Grid.GetRow(button);
 
-            MessageBox.Show($"Вы нажали удалить строку {index}");
+            var result = MessageBox.Show($"Вы точно хотите удалить строку {index}?", "Вы нажали Удалить задачу", MessageBoxButton.YesNo);
+            if (result == MessageBoxResult.Yes)
+            {
+                //ExerciseGrid.Children.Remove(button);
+                //ExerciseGrid.Children.RemoveAt(index);
+                TextBox t1 = new TextBox();
+                t1 = textBoxes_tasks[index - 1];
+                ExerciseGrid.Children.Remove(t1);
+                t1 = textBoxes_answers[index - 1];
+                ExerciseGrid.Children.Remove(t1);
+                //ExerciseGrid.RowDefinitions.Remove(ExerciseGrid.RowDefinitions[index]);
+                
+                
+                textBoxes_tasks.Remove(textBoxes_tasks[index-1]);
+                textBoxes_answers.Remove(textBoxes_answers[index-1]);
+                string s = "";
+                foreach (var x in textBoxes_tasks)
+                {
+                    s += x.Text + "|";
+                }
+                MessageBox.Show(s);
+
+                Grid.SetRowSpan(TaskSplitter, count);
+                this.count--;
+                //правильно удаляется только предпоследняя строка
+            }
             // удалить текстбоксы из чайлдов грида
             // удалить текстбоксы из списков текстбоксов (-1 индекс)
             // удалить кнопку из чайлдов грида
