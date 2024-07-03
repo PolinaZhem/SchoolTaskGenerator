@@ -191,7 +191,7 @@ namespace WpfApp1
                                 RPN.Push(OpStack.Pop());
                                 if (OpStack.Count == 0)
                                 {
-                                    throw new ArgumentOutOfRangeException("Error", "Wrong brackets! Extra closing bracket found.");
+                                    throw new Exception("Wrong brackets! Extra closing bracket found.");
                                 }
                             }
                             OpStack.Pop();
@@ -237,12 +237,12 @@ namespace WpfApp1
             {
                 if (OpStack.Last().toktype == TokenType.Bracket)
                 {
-                    throw new ArgumentOutOfRangeException("Error", "Wrong brackets! Extra opening bracket found.");
+                    throw new Exception("Wrong brackets! Extra opening bracket found.");
                 }
                 if (OpStack.Last().toktype == TokenType.Oper &&
                 (OpStack.Last() as Operation).type == OperType.RoundStart)
                 {
-                    throw new ArgumentOutOfRangeException("Error", "Wrong operation! Uncomplete rouding operation.");
+                    throw new Exception("Wrong operation! Uncomplete rouding operation.");
                 }
                 RPN.Push(OpStack.Pop());
             }
@@ -268,7 +268,7 @@ namespace WpfApp1
                         return value_of_variable[token.str];
                     else
                     {
-                        throw new ArgumentOutOfRangeException("Error", "The value of the variable " + token.str + " is missing!");
+                        throw new Exception("The value of the variable " + token.str + " is missing!");
                         return 0;
                     }
 
@@ -277,20 +277,20 @@ namespace WpfApp1
                         Operation oper = token as Operation;
                         if (oper.type == OperType.None)
                         {
-                            throw new ArgumentOutOfRangeException("Error", "Unclown type of operation!");
+                            throw new Exception("Unclown type of operation!");
                             return 0;
                         }
                         if (oper.oper_counter == 1)
                         {
-                            if (RPN.Count() == 0) throw new ArgumentOutOfRangeException("Error", "It isn't the operator of operation!");
+                            if (RPN.Count() == 0) throw new Exception("It isn't the operator of operation!");
                             b = CalculateRPN(RPN, value_of_variable);
                         }
                         else if (oper.oper_counter == 2)
                         {
-                            if (RPN.Count() == 0) throw new ArgumentOutOfRangeException("Error", "Not enough operands for operation!");
+                            if (RPN.Count() == 0) throw new Exception("Not enough operands for operation!");
                             b = CalculateRPN(RPN, value_of_variable);
 
-                            if (RPN.Count() == 0) throw new ArgumentOutOfRangeException("Error", "Not enough operands for operation!");
+                            if (RPN.Count() == 0) throw new Exception("Not enough operands for operation!");
                             a = CalculateRPN(RPN, value_of_variable);
                         }
                         switch (oper.type)
@@ -310,10 +310,10 @@ namespace WpfApp1
                             case OperType.Pow:
                                 {
                                     if (a == 0 && b < 0)
-                                        throw new ArgumentOutOfRangeException("Error", "Operation error! Negative power of zero.");
+                                        throw new Exception("Operation error! Negative power of zero.");
 
                                     else if (a < 0)
-                                        throw new ArgumentOutOfRangeException("Error", "Operation error! Power of negative number.");
+                                        throw new Exception("Operation error! Power of negative number.");
                                     else
                                         return Math.Pow(a, b);
                                 }
@@ -322,13 +322,13 @@ namespace WpfApp1
                                     int a1 = (int)Math.Round(a, 0);
                                     int b1 = (int)Math.Round(b, 0);
                                     if (b1 == 0)
-                                        throw new ArgumentOutOfRangeException("Error", "Operation error! Dividing by zero.");
+                                        throw new Exception("Operation error! Dividing by zero.");
                                     return a1 % b1;
                                 }
                             case OperType.Fac:
                                 {
                                     if ((int)Math.Round(b, 0) < 0)
-                                        throw new ArgumentOutOfRangeException("Error", "Operation error! The factorial of a negative number.");
+                                        throw new Exception("Operation error! The factorial of a negative number.");
 
                                     int b1 = 1;
                                     int b_max = (int)Math.Round(b, 0);
@@ -344,14 +344,14 @@ namespace WpfApp1
                             case OperType.Arcs:
                                 {
                                     if (b < -1 || b > 1)
-                                        throw new ArgumentOutOfRangeException("Error", "Wrong operation!");
+                                        throw new Exception("Wrong operation!");
                                     else
                                         return Math.Asin(b);
                                 }
                             case OperType.Arcc:
                                 {
                                     if (b < -1 || b > 1)
-                                        throw new ArgumentOutOfRangeException("Error", "Wrong operation!");
+                                        throw new Exception("Wrong operation!");
                                     else
                                         return Math.Acos(b);
                                 }
@@ -359,14 +359,14 @@ namespace WpfApp1
                             case OperType.Ln:
                                 {
                                     if (b < 0)
-                                        throw new ArgumentOutOfRangeException("Error", "Wrong operation!");
+                                        throw new Exception("Wrong operation!");
                                     else
                                         return Math.Log(b);
                                 }
                             case OperType.Log:
                                 {
                                     if (b < 0 || a < 0)
-                                        throw new ArgumentOutOfRangeException("Error", "Wrong operation!");
+                                        throw new Exception("Wrong operation!");
                                     else
                                         return Math.Log(b, a);
                                 }
@@ -421,10 +421,10 @@ namespace WpfApp1
             Stack<Token> tmp_toks = new Stack<Token>(_RPN);
             Stack<Token> tokens = new Stack<Token>(tmp_toks);
             if (tokens.Count() == 0)
-                throw new ArgumentOutOfRangeException("Error", "No loaded formula!");
+                throw new Exception("No loaded formula!");
             double result = CalculateRPN(tokens, value_of_variable);
             if (tokens.Count() > 0)
-                throw new ArgumentOutOfRangeException("Error", "Fromula error! Too much operands.");
+                throw new Exception("Fromula error! Too much operands.");
 
             return result;
             //добавить копию RPN
