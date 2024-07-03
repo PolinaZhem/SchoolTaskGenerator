@@ -191,7 +191,7 @@ namespace WpfApp1
                                 RPN.Push(OpStack.Pop());
                                 if (OpStack.Count == 0)
                                 {
-                                    throw new Exception("Wrong brackets! Extra closing bracket found.");
+                                    throw new Exception("Неправильные скобки! Лишняя закрывающая скобка.");
                                 }
                             }
                             OpStack.Pop();
@@ -237,12 +237,12 @@ namespace WpfApp1
             {
                 if (OpStack.Last().toktype == TokenType.Bracket)
                 {
-                    throw new Exception("Wrong brackets! Extra opening bracket found.");
+                    throw new Exception("Неправильные скобки! Лишняя открывающая скобка.");
                 }
                 if (OpStack.Last().toktype == TokenType.Oper &&
                 (OpStack.Last() as Operation).type == OperType.RoundStart)
                 {
-                    throw new Exception("Wrong operation! Uncomplete rouding operation.");
+                    throw new Exception("Неправильная операция! Неполная операция выделения целой части.");
                 }
                 RPN.Push(OpStack.Pop());
             }
@@ -267,22 +267,19 @@ namespace WpfApp1
                     if (value_of_variable.ContainsKey(token.str))
                         return value_of_variable[token.str];
                     else
-                    {
-                        throw new Exception("The value of the variable " + token.str + " is missing!");
-                        return 0;
-                    }
+                        throw new Exception("Значение переменной " + token.str + " отсутствует!");
 
                 case TokenType.Oper:
                     {
                         Operation oper = token as Operation;
                         if (oper.type == OperType.None)
                         {
-                            throw new Exception("Unclown type of operation!");
+                            throw new Exception("Неизвестный тип операции!");
                             return 0;
                         }
                         if (oper.oper_counter == 1)
                         {
-                            if (RPN.Count() == 0) throw new Exception("It isn't the operator of operation!");
+                            if (RPN.Count() == 0) throw new Exception("Не хватает операнда для операции!");
                             b = CalculateRPN(RPN, value_of_variable);
                         }
                         else if (oper.oper_counter == 2)
@@ -396,7 +393,7 @@ namespace WpfApp1
                 Stack<Token> RPN = Convert2RPN(tokens);
                 result = CalculateRPN(RPN, value_of_variable);
             }
-            catch (ArgumentException e)
+            catch (Exception e)
             {
                 error_text = e.Message;
                 is_error = true;
