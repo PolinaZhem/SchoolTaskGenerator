@@ -53,12 +53,12 @@
             </Grid.RowDefinitions>
             <TextBlock Grid.Row="0" Text="Введите задачу" TextAlignment="Center" VerticalAlignment="Center" />
             <ScrollViewer Grid.Row="1" Margin="0 5px">
-                <TextBox x:Name="TaskTextBox" Margin="0px" TextWrapping="Wrap" SpellCheck.IsEnabled="True" Language="ru-ru"/>
+                <TextBox x:Name="TaskTextBox" Margin="0px" TextWrapping="Wrap" SpellCheck.IsEnabled="True" Language="ru-ru" TextChanged="TaskTextBox_TextChanged"/>
             </ScrollViewer>
             <Button x:Name="TextAnalysisButton" Grid.Row="2" Content="Анализ текста" Click="TextAnalysisButton_Click" />
             <TextBlock Grid.Row="3" Text="Введите формулу" TextAlignment="Center" VerticalAlignment="Center" />
             <ScrollViewer Grid.Row="4" Margin="0 5px">
-                <TextBox x:Name="FormulaTextBox" Margin="3px" TextWrapping="Wrap"/>
+                <TextBox x:Name="FormulaTextBox" Margin="3px" TextWrapping="Wrap" TextChanged="FormulaTextBox_TextChanged"/>
             </ScrollViewer>
         </Grid>
         <DataGrid Grid.Column="2" Grid.Row="1" x:Name="VariablesGrid" AutoGenerateColumns="False" CanUserAddRows="False">

@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using Microsoft.Win32;
+using System.Windows.Media;
+using System.Windows.Controls;
 
 namespace WpfApp1
 {
@@ -16,6 +18,7 @@ namespace WpfApp1
         private List<string> text_of_task = null;
         private List<VariableSetter> text_vars = null;
         private Dictionary<string, double> formula_vars = null;
+        SolidColorBrush defaultBrush = null;
 
         public MainWindow()
         {
@@ -27,6 +30,8 @@ namespace WpfApp1
             //    new VariableSetter { Name="Dist", RangeFrom=300, RangeTo=500, Step = 25, DigitsToRound = 3}
             //};
             VariablesGrid.ItemsSource = text_vars;
+
+            defaultBrush = FormulaAnalysisButton.Background as SolidColorBrush;
         }
 
         private void TextAnalysisButton_Click(object sender, RoutedEventArgs e)
@@ -58,11 +63,13 @@ namespace WpfApp1
             //MessageBox.Show(t);
             VariablesGrid.ItemsSource = text_vars;
             VariablesGrid.Items.Refresh();
+
+            TextAnalysisButton.Background = Brushes.ForestGreen;
         }
 
         private void FormulaAnalysisButton_Click(object sender, RoutedEventArgs e)
         {
-            string formula = FormulaTextBox.Text;
+            string formula = String.Concat(FormulaTextBox.Text.Where(c => !Char.IsWhiteSpace(c)));
             solver.LoadFormula(formula);
             formula_vars = solver.GetVars();
 
@@ -78,6 +85,7 @@ namespace WpfApp1
             }
 
             GenerateTaskButton.IsEnabled = everything_ok;
+            (sender as Button).Background = Brushes.ForestGreen;
         }
 
         private Task task;
@@ -143,7 +151,10 @@ namespace WpfApp1
                 }
                 VariablesGrid.Items.Refresh();
             }
+            FormulaAnalysisButton.Background = defaultBrush;
+            GenerateTaskButton.IsEnabled = false;
         }
+
         private void MenuNew_Click(object sender, RoutedEventArgs e)
         {
             TaskTextBox.Clear();
@@ -151,10 +162,26 @@ namespace WpfApp1
             text_vars.Clear();
             VariablesGrid.ItemsSource = text_vars;
             VariablesGrid.Items.Refresh();
+            FormulaAnalysisButton.Background = defaultBrush;
+            TextAnalysisButton.Background = defaultBrush;
+            GenerateTaskButton.IsEnabled = false;
         }
         private void MenuExit_Click(object sender, RoutedEventArgs e)
         {
             this.Close();
+        }
+
+        private void TaskTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            TextAnalysisButton.Background = Brushes.Yellow;
+            FormulaAnalysisButton.Background = Brushes.Yellow;
+            GenerateTaskButton.IsEnabled = false;
+        }
+
+        private void FormulaTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            FormulaAnalysisButton.Background = Brushes.Yellow;
+            GenerateTaskButton.IsEnabled = false;
         }
     }
 }
