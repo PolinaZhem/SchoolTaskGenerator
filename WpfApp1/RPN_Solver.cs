@@ -274,8 +274,7 @@ namespace WpfApp1
                         Operation oper = token as Operation;
                         if (oper.type == OperType.None)
                         {
-                            throw new Exception("Неизвестный тип операции!");
-                            return 0;
+                            throw new Exception($"Неизвестный тип операции \"{oper.str}\" !");
                         }
                         if (oper.oper_counter == 1)
                         {
