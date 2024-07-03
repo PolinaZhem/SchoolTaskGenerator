@@ -318,13 +318,6 @@ namespace WpfApp1
                                     else
                                         return Math.Pow(a, b);
                                 }
-                            case OperType.Sqrt:
-                                {
-                                    if (a < 0)
-                                        throw new ArgumentOutOfRangeException("Error", "Operation error! The root of negative number..");
-                                    else
-                                        return Math.Sqrt(a);
-                                }
                             case OperType.Mod:
                                 {
                                     int a1 = (int)Math.Round(a, 0);
