@@ -302,8 +302,7 @@ namespace WpfApp1
                                 {
                                     if (b == 0)
                                     {
-                                        throw new ArgumentOutOfRangeException("Error", "Operation error! Dividing by zero.");
-                                        return 0;
+                                        throw new Exception("Operation error! Dividing by zero.");
                                     }
                                     else
                                         return a / b;

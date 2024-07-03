@@ -59,9 +59,8 @@ namespace WpfApp1
         {
             formula = f;
         }
-        public void MakeTaskAndAnswer(Random rand, int variant)
+        public string MakeTaskAndAnswer(Random rand, int variant)
         {
-           // solver.LoadFormula(formula);
             foreach (var v in text_vars)
             {
                 int diff = ((int)v.RangeTo - (int)v.RangeFrom) / (int)v.Step;
@@ -77,23 +76,21 @@ namespace WpfApp1
                 t += text_vars[i].Value;
             }
             t += text_of_task.Last();
-            //ExerciseTextBox.Text += t;
-            string error_text = "";
-            bool is_error = false;
+
             double result = 0;
             try
             {
                 result = solver.Calculate();
             }
-            catch (ArgumentException e)
+            catch (Exception e)
             {
-                error_text = e.Message;
-                is_error = true;
+                string s = e.Message;
+                s += "\r\n";
+                foreach (var v in formula_vars)
+                    s += v.Key + "=" + v.Value + "; ";
+                return s;
             }
-            if (is_error)
-                MessageBox.Show(error_text);
-            //double result = solver.Calculate();
-            //AnswersTextBox.Text += result.ToString() + "\r\n\r\n";
+                
 
             var rd = new RowDefinition();
             rd.MinHeight = 38;
@@ -134,10 +131,12 @@ namespace WpfApp1
             margin.Right = 2;
             margin.Bottom = 2;
             delete_button.Margin = margin;
+            delete_button.Click += DeleteTaskButton_Click;
             Grid.SetRow(delete_button, ExerciseGrid.RowDefinitions.Count - 1);
             Grid.SetColumn(delete_button, 4);
             ExerciseGrid.Children.Add(delete_button);
-            delete_button.Click += DeleteTaskButton_Click;
+
+            return "";
         }
 
         private void DeleteTaskButton_Click(object sender, RoutedEventArgs e)
@@ -148,28 +147,32 @@ namespace WpfApp1
             var result = MessageBox.Show($"Вы точно хотите удалить строку {index}?", "Вы нажали Удалить задачу", MessageBoxButton.YesNo);
             if (result == MessageBoxResult.Yes)
             {
-                //ExerciseGrid.Children.Remove(button);
-                //ExerciseGrid.Children.RemoveAt(index);
+                ExerciseGrid.Children.Remove(button);
                 TextBox t1 = new TextBox();
                 t1 = textBoxes_tasks[index - 1];
                 ExerciseGrid.Children.Remove(t1);
                 t1 = textBoxes_answers[index - 1];
                 ExerciseGrid.Children.Remove(t1);
-                //ExerciseGrid.RowDefinitions.Remove(ExerciseGrid.RowDefinitions[index]);
-                
-                
-                textBoxes_tasks.Remove(textBoxes_tasks[index-1]);
-                textBoxes_answers.Remove(textBoxes_answers[index-1]);
-                string s = "";
-                foreach (var x in textBoxes_tasks)
+                ExerciseGrid.RowDefinitions.RemoveAt(index);
+
+                textBoxes_tasks.Remove(textBoxes_tasks[index - 1]);
+                textBoxes_answers.Remove(textBoxes_answers[index - 1]);
+
+                Label labelToDelete = null;
+
+                foreach(UIElement child in ExerciseGrid.Children)
                 {
-                    s += x.Text + "|";
+                    int row = Grid.GetRow(child);
+                    if (row > index && !(child is Label))
+                        Grid.SetRow(child, row-1);
+                    if (child is Label && row == this.count)
+                        labelToDelete = child as Label;
                 }
-                MessageBox.Show(s);
+
+                ExerciseGrid.Children.Remove(labelToDelete);
 
                 Grid.SetRowSpan(TaskSplitter, count);
                 this.count--;
-                //правильно удаляется только предпоследняя строка
             }
             // удалить текстбоксы из чайлдов грида
             // удалить текстбоксы из списков текстбоксов (-1 индекс)
@@ -180,66 +183,91 @@ namespace WpfApp1
 
         private void CountButton_Click(object sender, RoutedEventArgs e)
         {
-            // удаление всех строк грида кроме первой(нулевой)
-            int rows = ExerciseGrid.RowDefinitions.Count();
-            for (int i = rows-1; i > 0; i--)
-            {
-                ExerciseGrid.RowDefinitions.Remove(ExerciseGrid.RowDefinitions[i]);
-            }
-            // в последней строке после этого не тот номер варианта (не удаляется предыдущий)
-
-            Random rand = new Random();
             if (!Int32.TryParse(CountTextBox.Text, out var count))
             {
                 string error = "Введите целое число.";
                 MessageBox.Show(error);
                 CountTextBox.Text = "";
+                return;
             }
-            else
+
+            List<UIElement> gridElements = new List<UIElement>();
+            // удаление всех строк грида кроме первой(нулевой)
+            foreach (UIElement x in ExerciseGrid.Children)
             {
-                this.count = Int32.Parse(CountTextBox.Text);
-                for (int j = 0; j < count; j++)
-                {
-                    MakeTaskAndAnswer(rand, j + 1);
-                }
-                Grid.SetRowSpan(TaskSplitter, count+1);
-                //string s = "";
-                //foreach (var task in textBoxes_tasks)
-                //{
-                //    s += task.Text;
-                //}
-                //MessageBox.Show(s);
-                SaveButton.IsEnabled = true;
+                int row = Grid.GetRow(x);
+                if (row == 0)
+                    gridElements.Add(x);
             }
+            ExerciseGrid.Children.Clear();
+            foreach (UIElement x in gridElements)
+                ExerciseGrid.Children.Add(x);
+            gridElements.Clear();
+
+            textBoxes_tasks.Clear();
+            textBoxes_answers.Clear();
+
+            if (ExerciseGrid.RowDefinitions.Count() > 1)
+                ExerciseGrid.RowDefinitions.RemoveRange(1, ExerciseGrid.RowDefinitions.Count() - 1);
+            // в последней строке после этого не тот номер варианта (не удаляется предыдущий)
+
+            Random rand = new Random();
+            this.count = count;
+            for (int j = 0; j < count; j++)
+            {
+                int max_tries = 10;
+                int tries = 0;
+                string error = "";
+                while (tries < max_tries)
+                {
+                    string s = MakeTaskAndAnswer(rand, j + 1);
+                    if (s == "")
+                        break;
+                    error += s + "\r\n";
+                    tries++;
+                }
+                if (tries >= max_tries)
+                {
+                    MessageBox.Show("Не получилось создать задачи. В вычислениях формулы слишком часто возникают ошибки:\r\n" + error);
+                    this.count = j;
+                    break;
+                }
+            }
+            Grid.SetRowSpan(TaskSplitter, count + 1);
+            //string s = "";
+            //foreach (var task in textBoxes_tasks)
+            //{
+            //    s += task.Text;
+            //}
+            //MessageBox.Show(s);
+            SaveButton.IsEnabled = true;
         }
         private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
             SaveFileDialog dialog = new SaveFileDialog();
-            dialog.Filter = "Файлы задач (*.sctask)|*.sctask|Все файлы|*.*";
+            dialog.Filter = "Текстовые файлы|*.txt";
             dialog.Title = "Сохранение задачи";
             if (dialog.ShowDialog() != true)
                 return;
 
             string answersfilename = dialog.FileName;
-            string type = "";
             int index = answersfilename.LastIndexOf(".");
-            for (int i = index; i < answersfilename.Length; i++)
-            {
-                type += answersfilename[i];
-            }
+            string type = answersfilename.Substring(index);
+
             answersfilename = answersfilename.Substring(0, answersfilename.LastIndexOf("."));
-            answersfilename += "_answers" + type;
+            answersfilename += "_ответы" + type;
             FileStream fs = new FileStream(dialog.FileName, FileMode.Create, FileAccess.Write);
-            FileStream fs2 = new FileStream(answersfilename, FileMode.Create, FileAccess.Write);
             using (StreamWriter sw = new StreamWriter(fs))
             {
                 for (int i = 0; i < count; i++)
                 {
-                    sw.WriteLine($"Вариант {i+1}. ");
+                    sw.WriteLine($"Вариант {i + 1}. ");
                     sw.WriteLine(textBoxes_tasks[i].Text + "\r\n\r\n");
                 }
             }
             fs.Close();
+
+            FileStream fs2 = new FileStream(answersfilename, FileMode.Create, FileAccess.Write);
             using (StreamWriter sw = new StreamWriter(fs2))
             {
                 for (int i = 0; i < count; i++)
